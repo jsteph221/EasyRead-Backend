@@ -8,6 +8,7 @@ var express = require('express'),
 var User = require('./api/models/user.js');
 var Exchange = require('./api/models/exchange.js');
 var Conversation = require('./api/models/conversation.js');
+var Image = require('./api/models/image.js')
 
 var uri = 'mongodb://localhost/easyRead'
 mongoose.Promise = global.Promise;
@@ -26,7 +27,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 var userRoutes = require('./api/routes/userRoutes');
 var exchangeRoutes = require('./api/routes/exchangeRoutes');
 var chatRoutes = require('./api/routes/chatRoutes');
-
+var imageRoutes = require('./api/routes/imageRoutes');
 
 var listener = app.listen(port);
 
@@ -38,6 +39,7 @@ app.use(function(req,res,next){
 userRoutes(app);
 exchangeRoutes(app);
 chatRoutes(app);
+imageRoutes(app);
 app.use(function logErrors(err,req,res,ext){
     if (res.headersSent){
         return next(err);

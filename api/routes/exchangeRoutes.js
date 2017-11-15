@@ -9,5 +9,6 @@ module.exports = function(app){
 
   app.route('/api/exchanges/:exchangeId')
     .get(exchageContr.getExchange)
-    .delete(exchageContr.deleteExchange);
+    .delete(exchageContr.deleteExchange)
+    .put(exchageContr.editExchange);
 };
