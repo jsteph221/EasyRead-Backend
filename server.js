@@ -32,7 +32,12 @@ var imageRoutes = require('./api/routes/imageRoutes');
 var listener = app.listen(port);
 
 //Set cors
-
+app.use(function(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", '*');
+   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  next();
+});
 app.use(function(req,res,next){
     console.log("REQUEST: "+req.method +" : "+ req.originalUrl);
     next();
