@@ -3,7 +3,8 @@
 
 var mongoose = require('mongoose'),
   Users = mongoose.model('Users'),
-  Exchange = mongoose.model('Exchanges');
+  Exchange = mongoose.model('Exchanges'),
+  Image = mongoose.model('Images');
 ;
 
 exports.getAllUsers = function(req,res){
@@ -19,7 +20,7 @@ exports.getAllUsers = function(req,res){
 };
 exports.newUser = function(req,res){
   var user = new Users(req.body);
-  console.log(user);
+  console.log(req.body);
   user.save(function(err,user){
     if (err) {
       if(err.code == 11000){
@@ -64,7 +65,7 @@ exports.getAllExchanges = function(req,res){
 };
 exports.postNewExchange = function(req,res){
   var newExchange = parseJsonToExchangeDocument(req.body);
-   var userId = req.params.userName;
+  var userId = req.params.userName;
 
   newExchange.save(function(err,exchange){
     if(err) {
@@ -86,6 +87,7 @@ exports.postNewExchange = function(req,res){
   })
 };
 
+
 exports.checkLogin = function(req,res){
   var userId = req.body._id;
   var givenPw = req.body.password;
@@ -93,7 +95,7 @@ exports.checkLogin = function(req,res){
   Users.findById(Object(userId),'password',function(err,user){
     if(err) {
       console.log(err.message);
-      res.status(500).json({message:err});
+      res.status(500).json({message:"Error"});
     }
     else{
       if (user == null) {
@@ -129,5 +131,3 @@ function parseJsonToExchangeDocument(json){
   exch.description = json.description;
   return exch;
 }
-
-
