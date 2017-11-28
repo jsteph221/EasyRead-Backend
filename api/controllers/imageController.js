@@ -14,11 +14,8 @@ exports.getImage = function(req,res){
 }
 
 exports.postImage = function(req,res){
-  console.log("SAving Image");
   var newImage = new Image();
-  console.log(newImage);
   const buffer = Buffer.from(req.body.base64Image,'base64');
-  console.log(newImage);
   newImage.image= buffer;
   newImage.save(function(err,img){
     if(err) {

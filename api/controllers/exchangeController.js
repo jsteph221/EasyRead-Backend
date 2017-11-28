@@ -10,8 +10,47 @@ exports.searchExchanges = function(req,res){
     var coords = [];
     coords[0] = req.query.longitude;
     coords[1] = req.query.latitude;
+
     var maxRadius = req.query.maxDistance; //MsxDistance KM
+
     var userId = req.query.username;
+
+    var query = Exchange.where('locationData').near({center:coords,maxDistance:maxRadius});
+
+    if(userId != null){
+      query.where('posterId').ne(userId);
+    }
+    if(req.query.search != null){
+      var searchWords = req.query.search;
+      searchWords.replace(/\+/g," ");
+      query.where({$text:{$search:searchWords}}).select({score:{$meta:"textScore"}});
+    }
+    var sort = req.query.sort;
+
+    if(sort != null){
+      if(sort == "relevance"){
+        query.sort({score:{$meta:"textScore"}});
+      }else if(sort =="date"){
+        query.sort("date");
+      }else if(sort == "nearest"){
+        //Do nothing since will automatically sort by nearest
+      }
+    }else{
+      //Default to sorting by date if no sort query supplied
+      query.sort("date");
+    }
+
+    query.limit(limit).exec(function(err,exchanges){
+      if (err){
+        console.log(err);
+        return res.status(500).json({message: err.message});
+      }else{
+        console.log("Search Successful");
+        res.status(200).json({exchanges:exchanges,message:"Found Exchanges"});
+      }});
+
+
+    /*
     Exchange.find({
       locationData:{
         $near:coords,
@@ -27,6 +66,7 @@ exports.searchExchanges = function(req,res){
 
       }
     });
+    */
 }
 
 exports.getExchange = function(req,res){

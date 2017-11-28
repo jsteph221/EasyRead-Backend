@@ -31,6 +31,8 @@ var imageRoutes = require('./api/routes/imageRoutes');
 
 var listener = app.listen(port);
 
+//Set cors
+
 app.use(function(req,res,next){
     console.log("REQUEST: "+req.method +" : "+ req.originalUrl);
     next();

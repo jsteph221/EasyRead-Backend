@@ -20,7 +20,7 @@ exports.getAllUsers = function(req,res){
 };
 exports.newUser = function(req,res){
   var user = new Users(req.body);
-  console.log(user);
+  console.log(req.body);
   user.save(function(err,user){
     if (err) {
       if(err.code == 11000){
@@ -95,7 +95,7 @@ exports.checkLogin = function(req,res){
   Users.findById(Object(userId),'password',function(err,user){
     if(err) {
       console.log(err.message);
-      res.status(500).json({message:err});
+      res.status(500).json({message:"Error"});
     }
     else{
       if (user == null) {
